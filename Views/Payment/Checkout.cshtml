@@ -1,0 +1,109 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+﻿@*
+    Archivo: Views/MercadoPago/Checkout.cshtml
+*@
+@{
+    ViewBag.Title = "Checkout";
+=======
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+﻿@using System.Globalization
+
+@{
+    ViewData["Title"] = "Checkout";
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+}
+
+<h2>Checkout</h2>
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<!-- SDK MercadoPago.js -->
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+
+<!-- Contenedor para el botón de pago -->
+<div id="wallet_container"></div>
+
+<script>
+    const mp = new MercadoPago('@ViewBag.PublicKey');
+    const bricksBuilder = mp.bricks();
+
+    bricksBuilder.create("wallet", "wallet_container", {
+        initialization: {
+            preferenceId: "@ViewBag.PreferenceId",
+        },
+        customization: {
+            texts: {
+                valueProp: 'smart_option',
+            },
+        },
+=======
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+<form id="paymentForm" method="post" action="/Payment/CreatePayment">
+    <div class="form-group">
+        <label for="cardNumber">Número de tarjeta de crédito</label>
+        <input type="text" id="cardNumber" class="form-control" data-checkout="cardNumber" placeholder="Ingrese el número de su tarjeta" required>
+    </div>
+    <div class="form-group">
+        <label for="cardExpirationMonth">Mes de expiración</label>
+        <input type="text" id="cardExpirationMonth" class="form-control" data-checkout="cardExpirationMonth" placeholder="MM" required>
+    </div>
+    <div class="form-group">
+        <label for="cardExpirationYear">Año de expiración</label>
+        <input type="text" id="cardExpirationYear" class="form-control" data-checkout="cardExpirationYear" placeholder="YYYY" required>
+    </div>
+    <div class="form-group">
+        <label for="securityCode">Código de seguridad</label>
+        <input type="text" id="securityCode" class="form-control" data-checkout="securityCode" placeholder="CVC" required>
+    </div>
+    <input type="hidden" id="token" name="token"> <!-- Campo oculto para el token -->
+    <button type="submit" class="btn btn-primary">Pagar</button>
+</form>
+
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+    const form = document.getElementById('paymentForm');
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const card = {
+            cardNumber: document.getElementById('cardNumber').value,
+            cardExpirationMonth: document.getElementById('cardExpirationMonth').value,
+            cardExpirationYear: document.getElementById('cardExpirationYear').value,
+            securityCode: document.getElementById('securityCode').value
+        };
+
+        // Obtener el token de la tarjeta de crédito
+        const tokenResponse = await Mercadopago.createToken(card);
+        if (tokenResponse.status === 200) {
+            // Asignar el token al campo oculto
+            document.getElementById('token').value = tokenResponse.data.id;
+
+            // Enviar el formulario al servidor
+            form.submit();
+        } else {
+            alert('Hubo un error al obtener el token de la tarjeta de crédito.');
+        }
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+=======
+>>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
+    });
+</script>
