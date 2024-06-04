@@ -9,18 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Net;
 using MvcMovie.Services;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 using MercadoPago.Config;
 
 
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,16 +46,6 @@ builder.Services.AddScoped<CartService>();
 //Servicio MercadoPago
 builder.Services.AddSingleton<MercadoPagoService>();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
 // regionBinder
 builder.Services.AddControllers(options =>
 {

@@ -34,14 +34,4 @@ public class MercadoPagoService
         Payment payment = await client.CreateAsync(paymentRequest);
         return payment;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
-=======
->>>>>>> 8e5e430d4d2c69d53280a9e755c4c5391dc04f16
 }
