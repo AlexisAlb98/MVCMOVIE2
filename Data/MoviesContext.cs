@@ -41,6 +41,12 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
                   .WithMany()
                   .HasForeignKey(e => e.MovieId);
         });
+        modelBuilder.Entity<Pedido>(entity =>
+        {
+            entity.Property(p => p.Total)
+                  .HasColumnType("decimal(18, 2)");
+        });
+
 
         // Configuración para las entidades de Identity
         modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => new { x.LoginProvider, x.ProviderKey });
@@ -51,4 +57,6 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    public DbSet<MvcMovie.Models.Pedido>? Pedido { get; set; }
 }

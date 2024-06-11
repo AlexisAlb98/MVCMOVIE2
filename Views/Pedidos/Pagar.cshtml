@@ -1,0 +1,10 @@
+﻿@model List<Pedido>
+
+    @foreach (var pedido in Model)
+    {
+        <div>
+            <p>@pedido.Nombre</p>
+            <!-- Otros detalles del pedido -->
+            <a href="@Url.Action("Checkout", "Payment", new { pedidoId = pedido.Id })" class="btn btn-primary">Pagar</a>
+        </div>
+    }

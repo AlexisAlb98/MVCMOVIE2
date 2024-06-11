@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MvcMovie.Data; // Asegúrate de ajustar el namespace según tu estructura de proyecto
-using MvcMovie.Models; // Ajusta según tu estructura de proyecto
+using MvcMovie.Data;
+using MvcMovie.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace MvcMovie.Services
@@ -21,15 +21,13 @@ namespace MvcMovie.Services
         {
             if (!httpContext.Request.Cookies.TryGetValue("CartId", out var cartId))
             {
-                // Genera un nuevo CartId si no existe
                 cartId = Guid.NewGuid().ToString();
-                // Almacena el CartId en una cookie
                 httpContext.Response.Cookies.Append("CartId", cartId);
             }
             return cartId;
         }
 
-        public async Task AddToCart(int movieId, int quantity, HttpContext httpContext)
+        public async Task AddToCart(int movieId, HttpContext httpContext)
         {
             var cartId = GetCartId(httpContext);
             var cartItem = await _context.CartItems
@@ -37,17 +35,24 @@ namespace MvcMovie.Services
 
             if (cartItem == null)
             {
+                var movie = await _context.Movies.FindAsync(movieId);
+                if (movie == null)
+                {
+                    throw new KeyNotFoundException("Movie not found");
+                }
+
                 cartItem = new CartItem
                 {
                     MovieId = movieId,
-                    Quantity = quantity,
-                    CartId = cartId
+                    Quantity = 1,
+                    CartId = cartId,
+                    Movie = movie
                 };
                 _context.CartItems.Add(cartItem);
             }
             else
             {
-                cartItem.Quantity += quantity;
+                cartItem.Quantity += 1;
             }
 
             await _context.SaveChangesAsync();
@@ -60,6 +65,68 @@ namespace MvcMovie.Services
                 .Where(c => c.CartId == cartId)
                 .Include(c => c.Movie)
                 .ToListAsync();
+        }
+        public async Task UpdateCartItemQuantity(int cartItemId, int quantity)
+        {
+            var cartItem = await _context.CartItems.FindAsync(cartItemId);
+            if (cartItem == null)
+            {
+                throw new KeyNotFoundException("Cart item not found");
+            }
+
+            if (quantity >= 1)
+            {
+                cartItem.Quantity = quantity; // Actualiza la cantidad a la nueva cantidad especificada
+            }
+            else
+            {
+                throw new ArgumentException("Quantity must be at least 1");
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task IncrementCartItemQuantity(int cartItemId)
+        {
+            var cartItem = await _context.CartItems.FindAsync(cartItemId);
+            if (cartItem == null)
+            {
+                throw new KeyNotFoundException("Cart item not found");
+            }
+
+            cartItem.Quantity += 1;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DecrementCartItemQuantity(int cartItemId)
+        {
+            var cartItem = await _context.CartItems.FindAsync(cartItemId);
+            if (cartItem == null)
+            {
+                throw new KeyNotFoundException("Cart item not found");
+            }
+
+            if (cartItem.Quantity > 1)
+            {
+                cartItem.Quantity -= 1;
+            }
+            else
+            {
+                throw new ArgumentException("Quantity must be at least 1");
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveFromCart(int cartItemId)
+        {
+            var cartItem = await _context.CartItems.FindAsync(cartItemId);
+            if (cartItem != null)
+            {
+                _context.CartItems.Remove(cartItem);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
