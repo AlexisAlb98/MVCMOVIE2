@@ -6,13 +6,9 @@ public class MercadoPagoService
 {
     private readonly string _accessToken;
 
-#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
     public MercadoPagoService(IConfiguration configuration)
-#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
     {
-#pragma warning disable CS8601 // Posible asignación de referencia nula
         _accessToken = configuration["MercadoPago:AccessToken"];
-#pragma warning restore CS8601 // Posible asignación de referencia nula
         MercadoPagoConfig.AccessToken = _accessToken;
     }
 

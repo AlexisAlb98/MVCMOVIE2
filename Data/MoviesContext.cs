@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using MvcMovie.Models;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using MvcMovie.Models;
 
 namespace MvcMovie.Data;
 
@@ -27,6 +27,8 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<ApplicationUser>().ToTable("Users");
         modelBuilder.Entity<Movie>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Movies__3214EC07659BF9C6");
@@ -47,6 +49,20 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
                   .HasColumnType("decimal(18, 2)");
         });
 
+        modelBuilder.Entity<Pedido>()
+            .HasMany(p => p.CartItems)
+            .WithOne(ci => ci.Pedido)
+            .HasForeignKey(ci => ci.PedidoId);
+
+        modelBuilder.Entity<CartItem>()
+            .HasOne(ci => ci.Movie)
+            .WithMany()
+            .HasForeignKey(ci => ci.MovieId);
+
+        modelBuilder.Entity<Pedido>()
+            .HasOne(p => p.User)
+            .WithMany()
+            .HasForeignKey(p => p.UserId);
 
         // Configuración para las entidades de Identity
         modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => new { x.LoginProvider, x.ProviderKey });
@@ -54,9 +70,11 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<IdentityUserToken<string>>().HasKey(x => new { x.UserId, x.LoginProvider, x.Name });
 
         OnModelCreatingPartial(modelBuilder);
+
+
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-    public DbSet<MvcMovie.Models.Pedido>? Pedido { get; set; }
+    public DbSet<Pedido>? Pedido { get; set; }
 }

@@ -34,7 +34,7 @@
                     <a asp-action="Details" asp-route-id="@pedido.Id">Detalles</a> |
                     <a asp-action="Edit" asp-route-id="@pedido.Id">Editar</a> |
                     <a asp-action="Delete" asp-route-id="@pedido.Id">Eliminar</a> |
-                    <a asp-action="Checkout" asp-route-pedidoId="@pedido.Id">Pagar</a> <!-- Agregar el enlace a la acción Checkout -->
+                    <a asp-action="Checkout" asp-controller="Payment" method="get" asp-route-pedidoId="@pedido.Id">Pagar</a> <!-- Agregar el enlace a la acción Checkout -->
                 </td>
             </tr>
         }

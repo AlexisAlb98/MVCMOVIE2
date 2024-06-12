@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
 using MvcMovie.Models;
+using MvcMovie.Services;
 
 namespace MvcMovie.Controllers
 {
@@ -14,11 +15,17 @@ namespace MvcMovie.Controllers
     {
         private readonly MoviesContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly PedidoService _pedidoService;
+        private readonly MercadoPagoService _mercadoPagoService;
+        private readonly IConfiguration _configuration;
 
-        public PedidosController(MoviesContext context, UserManager<IdentityUser> userManager)
+        public PedidosController(MoviesContext context, UserManager<IdentityUser> userManager, PedidoService pedidoService, MercadoPagoService mercadoPagoService, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
+            _pedidoService = pedidoService;
+            _mercadoPagoService = mercadoPagoService;
+            _configuration = configuration; // Aquí inyectamos la configuración
         }
 
         // GET: Pedidos/RealizarPedido
@@ -52,7 +59,9 @@ namespace MvcMovie.Controllers
             {
                 Nombre = user.Email, // Utilizar el correo electrónico del usuario como nombre del pedido
                 Detalles = string.Join(", ", cartItems.Select(item => $"{item.Movie.Title} (Cantidad: {item.Quantity})")),
-                Total = totalPedido
+                Total = totalPedido,
+                UserId = user.Id, // Establecer el UserId con el ID del usuario autenticado
+                CartItems = cartItems // Asignar la lista de ítems del carrito de compras al pedido
             };
 
             // Agregar el nuevo pedido al contexto y guardarlo en la base de datos
@@ -65,10 +74,6 @@ namespace MvcMovie.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-
-
-
 
         // GET: Pedidos
         public async Task<IActionResult> Index()

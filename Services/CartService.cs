@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MvcMovie.Data;
 using MvcMovie.Models;
 using Microsoft.AspNetCore.Http;
+using MvcMovie.Data;
 
 namespace MvcMovie.Services
 {

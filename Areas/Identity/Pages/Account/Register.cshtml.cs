@@ -74,6 +74,10 @@ namespace MvcMovie.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
+            [Display(Name = "Nombre")]
+            public string Nombre { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -113,6 +117,9 @@ namespace MvcMovie.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                // Seteando el nombre de usuario en lugar del correo electrónico
+                user.UserName = Input.Nombre;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

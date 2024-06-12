@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="borrador\" />
-    <Folder Include="Data\" />
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 

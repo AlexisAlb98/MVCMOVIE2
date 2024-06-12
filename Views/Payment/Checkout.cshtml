@@ -1,35 +1,31 @@
-@*
-    Archivo: Views/MercadoPago/Checkout.cshtml
-*@
 @{
     ViewBag.Title = "Checkout";
-}
-@using System.Globalization
-
-@{
-    ViewData["Title"] = "Checkout";
 }
 
 <h2>Checkout</h2>
 
-<!-- SDK MercadoPago.js -->
+<div>
+    <h3>Detalles del Pedido</h3>
+    <p>Nombre: @Model.Nombre</p>
+    <p>Detalles: @Model.Detalles</p>
+    <p>Total: @Model.Total</p>
+</div>
+
 <script src="https://sdk.mercadopago.com/js/v2"></script>
-
-<!-- Contenedor para el botón de pago -->
-<div id="wallet_container"></div>
-
 <script>
-    const mp = new MercadoPago('@ViewBag.PublicKey');
-    const bricksBuilder = mp.bricks();
+    const mp = new MercadoPago('@ViewBag.PublicKey', {
+        locale: 'es-AR'
+    });
 
-    bricksBuilder.create("wallet", "wallet_container", {
-        initialization: {
-            preferenceId: "@ViewBag.PreferenceId",
+    mp.checkout({
+        preference: {
+            id: '@ViewBag.PreferenceId'
         },
-        customization: {
-            texts: {
-                valueProp: 'smart_option',
-            },
-        },
+        render: {
+            container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
+            label: 'Pagar', // Cambia el texto del botón de pago (opcional)
+        }
     });
 </script>
+
+<div class="cho-container"></div>

@@ -8,7 +8,10 @@
         public string CartId { get; set; } = null!;
 
         public Movie Movie { get; set; } = null!;
-        public Pedido? Pedido { get; set; } // Agregar esta propiedad
 
+        public int? PedidoId { get; set; } // Agregar esta propiedad
+        public Pedido? Pedido { get; set; } // Agregar esta propiedad
+       
+      
     }
 }

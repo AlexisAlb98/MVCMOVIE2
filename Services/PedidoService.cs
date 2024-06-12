@@ -1,4 +1,5 @@
-﻿using MvcMovie.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MvcMovie.Data;
 using MvcMovie.Models;
 
 namespace MvcMovie.Services
@@ -14,7 +15,10 @@ namespace MvcMovie.Services
 
         public async Task<Pedido> GetPedidoById(int id)
         {
-            return await _context.Pedido.FindAsync(id);
+            return await _context.Pedido
+                .Include(p => p.CartItems)
+                .ThenInclude(ci => ci.Movie)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

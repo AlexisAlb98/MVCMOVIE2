@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using MvcMovie.Data;
 using E_Commerce.Binder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Net;
 using MvcMovie.Services;
 using MercadoPago.Config;
+using MvcMovie.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +30,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<MoviesContext>()
     .AddDefaultTokenProviders();
 
+
 // Configurar la cultura global
 var defaultCulture = new CultureInfo("es-AR");
 var localizationOptions = new RequestLocalizationOptions
@@ -40,6 +41,9 @@ var localizationOptions = new RequestLocalizationOptions
 };
 //Servicio Carrito de compras
 builder.Services.AddScoped<CartService>();
+
+//ServicioPedidos
+builder.Services.AddScoped<PedidoService>();
 
 //Servicio MercadoPago
 builder.Services.AddSingleton<MercadoPagoService>();
