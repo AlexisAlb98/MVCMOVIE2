@@ -4,11 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-
-<head>
-	
-</head>
-
 <h1>Películas</h1>
 
 <p>
@@ -26,35 +21,22 @@
     @foreach (var item in Model)
     {
         <div class="col-md-3 mb-4">
-            <div class="card h-100" >
-                <img src="@item.Image" class="card-img-top" alt="Movie Image" >
+            <div class="card h-100">
+                <img src="@item.Image" class="card-img-top" alt="Movie Image">
                 <div class="card-body">
                     <h5 class="card-title">@item.Title</h5>
                     <p class="card-text">@item.Genre</p>
-                    <p class="card-text">@{
-                            if (item.ReleaseDate != null)
-                            {
-                                <text>@item.ReleaseDate.Value.ToString("d")</text>
-                                ;
-                            }
-                        }</p>
-                    <p class="card-text"><strong>@{
-                                if (item.Price != null)
-                                {
-                                    <text>@item.Price.Value.ToString("C")</text>
-                                    ;
-                                }
-                            }</strong></p>
+                    <p class="card-text">@item.ReleaseDate?.ToString("d")</p>
+                    <p class="card-text"><strong>@item.Price?.ToString("C")</strong></p>
                 </div>
                 <div class="card-footer text-center">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Editar</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
-
-					<form asp-action="AddToCart" asp-controller="Cart" method="post">
-						<input type="hidden" name="movieId" value="@item.Id" />
-						<button type="submit" class="btn btn-success btn-sm">Agregar al carrito</button>
-					</form>
+                    <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                        <input type="hidden" name="movieId" value="@item.Id" />
+                        <button type="submit" class="btn btn-success btn-sm">Agregar al carrito</button>
+                    </form>
                 </div>
             </div>
         </div>
