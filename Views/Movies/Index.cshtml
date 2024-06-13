@@ -3,8 +3,9 @@
 @{
     ViewData["Title"] = "Index";
 }
+<body style="background-color: #E9F1FA !important;">
 
-<h1>Películas</h1>
+<h1 style="background-color: #0000 !important">Películas</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Agregar nueva</a>
@@ -17,28 +18,51 @@
     </div>
 </form>
 
-<div class="row">
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
     @foreach (var item in Model)
     {
-        <div class="col-md-3 mb-4">
+        <div class="col">
             <div class="card h-100">
-                <img src="@item.Image" class="card-img-top" alt="Movie Image">
+                <img src="@item.Image" class="card-img-top" alt="Movie Image" style="height: 300px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">@item.Title</h5>
                     <p class="card-text">@item.Genre</p>
                     <p class="card-text">@item.ReleaseDate?.ToString("d")</p>
                     <p class="card-text"><strong>@item.Price?.ToString("C")</strong></p>
                 </div>
-                <div class="card-footer text-center">
+                <div class="card-footer d-flex justify-content-between">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm ms-1">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm ms-1">Eliminar</a>
                     <form asp-action="AddToCart" asp-controller="Cart" method="post">
                         <input type="hidden" name="movieId" value="@item.Id" />
-                        <button type="submit" class="btn btn-success btn-sm">Agregar al carrito</button>
+                        <button type="submit" class="btn btn-success btn-sm ms-1">Agregar al carrito</button>
                     </form>
                 </div>
             </div>
         </div>
     }
 </div>
+
+<style>
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .bg-custom {
+        background-image: url("~/Images/fondo_de_proyecto.jpg"); /* Ruta a tu imagen de fondo */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+</style>
+</body>
