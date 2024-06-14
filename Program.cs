@@ -25,20 +25,6 @@ builder.Services.AddDbContext<MoviesContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("cadenaSQL"));
 });
 
-// Configurar Identity
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<MoviesContext>()
-    .AddDefaultTokenProviders();
-
-
-// Configurar la cultura global
-var defaultCulture = new CultureInfo("es-AR");
-var localizationOptions = new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture(defaultCulture),
-    SupportedCultures = new List<CultureInfo> { defaultCulture },
-    SupportedUICultures = new List<CultureInfo> { defaultCulture }
-};
 //Servicio Carrito de compras
 builder.Services.AddScoped<CartService>();
 
@@ -55,7 +41,39 @@ builder.Services.AddControllers(options =>
 });
 // endregion
 
+
+
+// Configurar Identity
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<MoviesContext>()
+    .AddDefaultTokenProviders();
+
 var app = builder.Build();
+// Inicializar roles
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        await RoleInitializer.InitializeAsync(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
+
+// Configurar la cultura global
+var defaultCulture = new CultureInfo("es-AR");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(defaultCulture),
+    SupportedCultures = new List<CultureInfo> { defaultCulture },
+    SupportedUICultures = new List<CultureInfo> { defaultCulture }
+};
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
