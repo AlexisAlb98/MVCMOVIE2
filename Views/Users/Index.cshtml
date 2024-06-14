@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<IdentityUser> userManager
 
 <h1>Lista de Usuarios Registrados</h1>
 
@@ -24,26 +24,21 @@
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
                 <td>
-                    @foreach (var role in await UserManager.GetRolesAsync(user))
+                    @foreach (var role in await userManager.GetRolesAsync(user))
                     {
-                        <span>@role</span><br />
+                        <span>@role</span>
+
+                        <br />
                     }
                 </td>
                 <td>
-                    @if (User.IsInRole("Administrador"))
-                    {
-                        <form asp-controller="Admin" asp-action="ChangeUserRole">
-                            <input type="hidden" name="userId" value="@user.Id" />
-                            <select name="role" asp-items="GetRolesSelectListItems()">
-                                <option value="">Seleccione un rol</option>
-                            </select>
-                            <button type="submit">Cambiar Rol</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <p>No tienes permisos para modificar roles.</p>
-                    }
+                    <form asp-controller="Users" asp-action="ChangeUserRole">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <select name="role" asp-items="GetRolesSelectListItems()">
+                            <option value="">Seleccione un rol</option>
+                        </select>
+                        <button type="submit">Cambiar Rol</button>
+                    </form>
                 </td>
             </tr>
         }
@@ -54,15 +49,15 @@
 @functions {
     public List<SelectListItem> GetRolesSelectListItems()
     {
-        var roleManager = ViewData["RoleManager"] as RoleManager<IdentityRole>;
+        var roleManager = (RoleManager<IdentityRole>)ViewData["RoleManager"];
         var roles = roleManager.Roles.ToList();
         var items = new List<SelectListItem>();
-        
+
         foreach (var role in roles)
         {
             items.Add(new SelectListItem { Value = role.Name, Text = role.Name });
         }
-        
+
         return items;
     }
 }
