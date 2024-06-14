@@ -28,41 +28,40 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<ApplicationUser>().ToTable("Users");
+
         modelBuilder.Entity<Movie>(entity =>
         {
+            entity.ToTable("Movie"); // Nombre de la tabla en la base de datos
             entity.HasKey(e => e.Id).HasName("PK__Movies__3214EC07659BF9C6");
-
             entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
             entity.Property(e => e.ReleaseDate).HasColumnType("date");
         });
+
         modelBuilder.Entity<CartItem>(entity =>
         {
+            entity.ToTable("CartItems"); // Nombre de la tabla en la base de datos
             entity.HasKey(e => e.Id);
             entity.HasOne(e => e.Movie)
                   .WithMany()
                   .HasForeignKey(e => e.MovieId);
         });
+
         modelBuilder.Entity<Pedido>(entity =>
         {
+            entity.ToTable("Pedido"); // Nombre de la tabla en la base de datos
+            entity.HasKey(e => e.Id);
+
             entity.Property(p => p.Total)
                   .HasColumnType("decimal(18, 2)");
+
+            entity.HasMany(p => p.CartItems)
+                  .WithOne(ci => ci.Pedido)
+                  .HasForeignKey(ci => ci.PedidoId);
+
+            entity.HasOne(p => p.User)
+                  .WithMany()
+                  .HasForeignKey(p => p.UserId);
         });
-
-        modelBuilder.Entity<Pedido>()
-            .HasMany(p => p.CartItems)
-            .WithOne(ci => ci.Pedido)
-            .HasForeignKey(ci => ci.PedidoId);
-
-        modelBuilder.Entity<CartItem>()
-            .HasOne(ci => ci.Movie)
-            .WithMany()
-            .HasForeignKey(ci => ci.MovieId);
-
-        modelBuilder.Entity<Pedido>()
-            .HasOne(p => p.User)
-            .WithMany()
-            .HasForeignKey(p => p.UserId);
 
         // Configuración para las entidades de Identity
         modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => new { x.LoginProvider, x.ProviderKey });
@@ -70,9 +69,9 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<IdentityUserToken<string>>().HasKey(x => new { x.UserId, x.LoginProvider, x.Name });
 
         OnModelCreatingPartial(modelBuilder);
-
-
     }
+
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

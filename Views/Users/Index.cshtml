@@ -1,0 +1,68 @@
+﻿@model List<Microsoft.AspNetCore.Identity.IdentityUser>
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+@inject UserManager<IdentityUser> UserManager
+
+<h1>Lista de Usuarios Registrados</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Roles Actuales</th>
+            <th>Modificar Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    @foreach (var role in await UserManager.GetRolesAsync(user))
+                    {
+                        <span>@role</span><br />
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <form asp-controller="Admin" asp-action="ChangeUserRole">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <select name="role" asp-items="GetRolesSelectListItems()">
+                                <option value="">Seleccione un rol</option>
+                            </select>
+                            <button type="submit">Cambiar Rol</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p>No tienes permisos para modificar roles.</p>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* Función para obtener los roles como SelectListItem *@
+@functions {
+    public List<SelectListItem> GetRolesSelectListItems()
+    {
+        var roleManager = ViewData["RoleManager"] as RoleManager<IdentityRole>;
+        var roles = roleManager.Roles.ToList();
+        var items = new List<SelectListItem>();
+        
+        foreach (var role in roles)
+        {
+            items.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+        }
+        
+        return items;
+    }
+}
