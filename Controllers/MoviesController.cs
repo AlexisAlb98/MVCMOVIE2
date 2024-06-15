@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +15,20 @@ namespace MvcMovie.Controllers
     public class MoviesController : Controller
     {
         private readonly MoviesContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public MoviesController(MoviesContext context)
+        public MoviesController(MoviesContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: 
         public async Task<IActionResult> Index(string buscar)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
+
             // Obtener todas las películas por defecto
             IQueryable<Movie> peliculas = _context.Movies;
 
@@ -30,6 +37,8 @@ namespace MvcMovie.Controllers
             {
                 peliculas = peliculas.Where(m => m.Title.Contains(buscar));
             }
+
+            ViewBag.UserRoles = roles;
 
             // Convertir los resultados en una lista y devolver la vista
             return View(await peliculas.ToListAsync());
@@ -53,17 +62,17 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price, Image")] Movie movie)
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Image")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -75,6 +84,7 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -91,11 +101,10 @@ namespace MvcMovie.Controllers
         }
 
         // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price, Image")] Movie movie)
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Image")] Movie movie)
         {
             if (id != movie.Id)
             {
@@ -126,6 +135,7 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -146,6 +156,7 @@ namespace MvcMovie.Controllers
         // POST: Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Movies == null)

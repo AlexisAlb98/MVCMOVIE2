@@ -55,4 +55,10 @@
     </tbody>
 </table>
 
-<a asp-controller="Pedidos" asp-action="RealizarPedido" class="btn btn-primary">Realizar pedido</a>
+<a asp-controller="Movies" asp-action="Index" class="btn btn-primary">Seguir Comprando</a>
+<br />
+<br />
+@if (Model.Any())
+{
+    <a asp-controller="Pedidos" asp-action="RealizarPedido" class="btn btn-primary">Realizar pedido</a>
+}
