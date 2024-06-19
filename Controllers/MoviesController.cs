@@ -23,6 +23,24 @@ namespace MvcMovie.Controllers
             _userManager = userManager;
         }
 
+        private List<SelectListItem> GetGenres()
+        {
+            return new List<SelectListItem>
+        {
+            new SelectListItem { Value = "Celulares", Text = "Celulares" },
+            new SelectListItem { Value = "Tablets", Text = "Tablets" },
+            new SelectListItem { Value = "Notebooks", Text = "Notebooks" },
+            new SelectListItem { Value = "Desktops", Text = "Desktops" },
+            new SelectListItem { Value = "Smartwatches", Text = "Smartwatches" },
+            new SelectListItem { Value = "Televisores", Text = "Televisores" },
+            new SelectListItem { Value = "Smarts TVs", Text = "Smarts TVs" },
+            new SelectListItem { Value = "Monitores", Text = "Monitores" },
+            new SelectListItem { Value = "Auriculares", Text = "Auriculares" },
+            new SelectListItem { Value = "Cámaras", Text = "Cámaras" },
+            new SelectListItem { Value = "Impresoras", Text = "Impresoras" },
+            new SelectListItem { Value = "Consolas de Videojuegos", Text = "Consolas de Videojuegos" }
+        };
+        }
         // GET: 
         public async Task<IActionResult> Index(string buscar)
         {
@@ -65,6 +83,7 @@ namespace MvcMovie.Controllers
         [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
+            ViewBag.Genres = GetGenres();
             return View();
         }
 
@@ -80,6 +99,7 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 
@@ -97,6 +117,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 
@@ -131,6 +152,7 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 

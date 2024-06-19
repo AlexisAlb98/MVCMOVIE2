@@ -8,20 +8,20 @@ namespace MvcMovie.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Título")]
+        [Display(Name = "Producto")]
         public string? Title { get; set; }
 
         [DataType(DataType.Date)]
-        [Display(Name = "Fecha de estreno")]
+        [Display(Name = "Fecha de lanzamiento")]
         public DateTime? ReleaseDate { get; set; }
 
-        [Display(Name = "Genero")]
+        [Display(Name = "Categoria")]
         public string? Genre { get; set; }
 
         [Display(Name = "Precio")]
         public decimal? Price { get; set; }
 
-        [Display(Name = "Cartelera")]
+        [Display(Name = "Imagen Descriptiva")]
         public string? Image { get; set; }
 
     }
