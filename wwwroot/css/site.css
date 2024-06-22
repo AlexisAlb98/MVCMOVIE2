@@ -1,21 +1,29 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
 
 html {
   position: relative;
   min-height: 100%;
 }
-
+/* Default Light Mode */
 body {
-  margin-bottom: 60px;
+    background-color: white;
+    color: black;
 }
+
+    /* Dark Mode */
+    body.dark-mode {
+        background-color: #121212;
+        color: gray;
+    }
+
+.navbar.dark-mode {
+    background-color: #333;
+}
+
+.footer.dark-mode {
+    background-color: #222;
+    color: gray;
+}
+
 
 .footer {
     position: fixed;
