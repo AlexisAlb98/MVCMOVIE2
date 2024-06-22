@@ -28,7 +28,6 @@ public partial class MoviesContext : IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<ApplicationUser>().ToTable("Users");
         modelBuilder.Entity<Movie>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Movies__3214EC07659BF9C6");
