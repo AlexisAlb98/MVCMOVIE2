@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\StyleSheet.css" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="mercadopago-sdk" Version="2.3.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.31" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.31" />
