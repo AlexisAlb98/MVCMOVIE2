@@ -45,6 +45,9 @@
                         </li>
                         <partial name="_LoginPartial" />
                     </ul>
+                    <button id="toggleTheme">Cambiar tema</button>
+                    <button id="toggleThemeLight" class="btn btn-light">Modo Claro</button>
+                    <button id="toggleThemeDark" class="btn btn-dark">Modo Oscuro</button>
                 </div>
             </div>
         </nav>
@@ -55,6 +58,42 @@
             @RenderBody()
         </main>
     </div>
+    <script>
+        const toggleThemeButton = document.getElementById('toggleTheme');
+
+        toggleThemeButton.addEventListener('click', () => {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+
+            // Actualizar variable Theme en ViewData (implementación específica)
+            // Por ejemplo, usando una llamada AJAX para actualizar el servidor
+            $.ajax({
+                url: '@Url.Action("ToggleTheme", "Home")', // URL de la acción del controlador
+                type: 'POST',
+                success: function () {
+                    // Opcional: Recargar la página si es necesario
+                    // location.reload();
+                }
+            });
+        });
+    </script>
+    <script>
+        const toggleThemeLightButton = document.getElementById('toggleThemeLight');
+        const toggleThemeDarkButton = document.getElementById('toggleThemeDark');
+
+        toggleThemeLightButton.addEventListener('click', () => {
+            document.body.classList.remove('dark-mode');
+            // Actualizar variable Theme en ViewData (implementación específica)
+            // Por ejemplo, usando una llamada AJAX para actualizar el servidor
+        });
+
+        toggleThemeDarkButton.addEventListener('click', () => {
+            document.body.classList.add('dark-mode');
+            // Actualizar variable Theme en ViewData (implementación específica)
+            // Por ejemplo, usando una llamada AJAX para actualizar el servidor
+        });
+    </script>
+
 
 
     <footer class="border-top footer text-muted">
