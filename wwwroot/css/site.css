@@ -1,36 +1,30 @@
-:root {
-    --bs-primary: #007bff; /* Color primario (claro) */
-    --bs-secondary: #6c757d; /* Color secundario (claro) */
-    --bs-light: #f8f9fa; /* Color de fondo claro */
-    --bs-dark: #212529; /* Color de fondo oscuro */
-}
 
-.dark-mode {
-    --bs-primary: #28a745; /* Color primario (oscuro) */
-    --bs-secondary: #343a40; /* Color secundario (oscuro) */
-    --bs-light: #495057; /* Color de fondo oscuro */
-    --bs-dark: #212529; /* Color de fondo oscuro */
-}
-
-
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
 
 html {
   position: relative;
   min-height: 100%;
 }
-
+/* Default Light Mode */
 body {
-  margin-bottom: 60px;
+    background-color: white;
+    color: black;
 }
+
+    /* Dark Mode */
+    body.dark-mode {
+        background-color: #121212;
+        color: gray;
+    }
+
+.navbar.dark-mode {
+    background-color: #333;
+}
+
+.footer.dark-mode {
+    background-color: #222;
+    color: gray;
+}
+
 
 .footer {
     position: fixed;

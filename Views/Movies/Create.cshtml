@@ -1,10 +1,10 @@
 ﻿@model MvcMovie.Models.Movie
 
 @{
-    ViewData["Title"] = "Añadir pelicula";
+    ViewData["Title"] = "Añadir Producto";
 }
 
-<h1>Agregar una Pelicula</h1>
+<h1>Agregar un Producto</h1>
 
 <hr />
 <div class="row">
@@ -12,18 +12,18 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label">Nombre</label>
+                <label asp-for="Title" class="control-label">Producto</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label">Fecha de estreno</label>
+                <label asp-for="ReleaseDate" class="control-label">Fecha de lanzamiento</label>
                 <input asp-for="ReleaseDate" class="form-control" />
                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Genre" class="control-label">Genero</label>
-                <input asp-for="Genre" class="form-control" />
+                <label asp-for="Genre" class="control-label">Categoria</label>
+                <select asp-for="Genre" class="form-control" asp-items="@(new SelectList(ViewBag.Genres, "Value", "Text"))"></select>
                 <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -32,7 +32,7 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
+                <label asp-for="Image" class="control-label">Imagen Descriptiva</label>
                 <input asp-for="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
