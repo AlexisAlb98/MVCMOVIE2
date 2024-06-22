@@ -4,16 +4,17 @@
 // Write your JavaScript code.
 
 document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.getElementById('darkModeToggle');
+    const toggleSwitch = document.getElementById('darkModeToggle');
     const body = document.body;
 
     // Load the user's preference if it exists
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme) {
         body.classList.add(currentTheme);
+        toggleSwitch.checked = true;
     }
 
-    toggleButton.addEventListener('click', function () {
+    toggleSwitch.addEventListener('change', function () {
         body.classList.toggle('dark-mode');
 
         // Save the user's preference
