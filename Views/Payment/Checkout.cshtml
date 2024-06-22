@@ -1,7 +1,9 @@
 @{
     ViewBag.Title = "Checkout";
 }
-
+<header>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</header>
 <h2>Checkout</h2>
 
 <div>
@@ -11,20 +13,42 @@
     <p>Total: @Model.Total</p>
 </div>
 
+<!-- Mensaje de éxito oculto inicialmente -->
+<div id="successMessage" class="alert alert-success" style="display: none;">
+    <strong>¡Compra exitosa!</strong> Gracias por tu compra.
+</div>
+
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
     const mp = new MercadoPago('@ViewBag.PublicKey', {
         locale: 'es-AR'
     });
 
-    mp.checkout({
-        preference: {
-            id: '@ViewBag.PreferenceId'
-        },
-        render: {
-            container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
-            label: 'Pagar', // Cambia el texto del botón de pago (opcional)
-        }
+    // Función para iniciar el pago
+    function iniciarPago() {
+        mp.checkout({
+            preference: {
+                id: '@ViewBag.PreferenceId'
+            },
+            render: {
+                container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
+                label: 'Pagar', // Cambia el texto del botón de pago (opcional)
+            }
+        });
+        // Mostrar mensaje de éxito después de 45 segundos
+        setTimeout(function () {
+            document.getElementById('successMessage').style.display = 'block';
+        }, 45000); // 45000 milisegundos = 45 segundos
+
+        // Redireccionar automáticamente a la vista Index después de 48 segundos
+        setTimeout(function () {
+            window.location.href = '@Url.Action("Index", "Movies")'; // Cambia "Home" por el controlador adecuado si es diferente
+        }, 48000); // 48000 milisegundos = 48 segundos
+    }
+
+    // Llamar a la función iniciarPago cuando el documento esté listo
+    document.addEventListener("DOMContentLoaded", function () {
+        iniciarPago();
     });
 </script>
 

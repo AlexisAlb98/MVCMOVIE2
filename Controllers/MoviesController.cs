@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +15,38 @@ namespace MvcMovie.Controllers
     public class MoviesController : Controller
     {
         private readonly MoviesContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public MoviesController(MoviesContext context)
+        public MoviesController(MoviesContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        private List<SelectListItem> GetGenres()
+        {
+            return new List<SelectListItem>
+        {
+            new SelectListItem { Value = "Celulares", Text = "Celulares" },
+            new SelectListItem { Value = "Tablets", Text = "Tablets" },
+            new SelectListItem { Value = "Notebooks", Text = "Notebooks" },
+            new SelectListItem { Value = "Desktops", Text = "Desktops" },
+            new SelectListItem { Value = "Smartwatches", Text = "Smartwatches" },
+            new SelectListItem { Value = "Televisores", Text = "Televisores" },
+            new SelectListItem { Value = "Smarts TVs", Text = "Smarts TVs" },
+            new SelectListItem { Value = "Monitores", Text = "Monitores" },
+            new SelectListItem { Value = "Auriculares", Text = "Auriculares" },
+            new SelectListItem { Value = "Cámaras", Text = "Cámaras" },
+            new SelectListItem { Value = "Impresoras", Text = "Impresoras" },
+            new SelectListItem { Value = "Consolas de Videojuegos", Text = "Consolas de Videojuegos" }
+        };
+        }
         // GET: 
         public async Task<IActionResult> Index(string buscar)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
+
             // Obtener todas las películas por defecto
             IQueryable<Movie> peliculas = _context.Movies;
 
@@ -30,6 +55,8 @@ namespace MvcMovie.Controllers
             {
                 peliculas = peliculas.Where(m => m.Title.Contains(buscar));
             }
+
+            ViewBag.UserRoles = roles;
 
             // Convertir los resultados en una lista y devolver la vista
             return View(await peliculas.ToListAsync());
@@ -53,17 +80,18 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
+            ViewBag.Genres = GetGenres();
             return View();
         }
 
         // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price, Image")] Movie movie)
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Image")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -71,10 +99,12 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 
         // GET: Movies/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -87,15 +117,15 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 
         // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price, Image")] Movie movie)
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Image")] Movie movie)
         {
             if (id != movie.Id)
             {
@@ -122,10 +152,12 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 
         // GET: Movies/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -146,6 +178,7 @@ namespace MvcMovie.Controllers
         // POST: Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Movies == null)

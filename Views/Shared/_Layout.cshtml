@@ -4,7 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Movie App</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/5hb7ie4Z2SZOo6Wr8y3p1I4GT8Dz/7pMogYedc" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-dyDikZKKeGpMhg0W5+tlX9FWwHtpdfXwIcDkc6Q6Pa4rVm2mRsmh9H93Vp1Z1M9x" crossorigin="anonymous">
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/StyleSheet.css" asp-append-version="true" />
@@ -71,14 +78,23 @@
 </head>
 <body>
     <header>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Movies" style="color: white;" asp-action="Index">Movie App</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Movies" asp-action="Index">BiClouds Tecno</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item dropdown">
                             <a class="nav-link text-light" href="#">Películas</a>
                         </li>
@@ -102,11 +118,45 @@
                                 <li><a class="dropdown-item" href="#">Registrarse</a></li>
                                 <li><a class="dropdown-item" href="#">Carrito</a></li>
                             </ul>
+
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Movies" asp-action="Create">Añadir un Producto</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Users" asp-action="Index">Gestión de Usuarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Pedidos" asp-action="Index">Todos los Pedidos</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="" asp-controller="Pedidos" asp-action="MisPedidos">Mis Pedidos</a>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li>
+                            <a asp-controller="Cart" asp-action="Index" class="btn btn-primary">Ver Carrito</a>
+
+                        </li>
+                        <li class="nav-item ms-2">
+                            <div class="form-check form-switch text-center">
+                                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                                <br />
+                                <label class="form-check-label mt-3" for="darkModeToggle">Cambiar tema</label>
+                            </div>
+                        </li>
+                        <br />
+                        <div class="nav-item ms-4">
+							<partial name="_LoginPartial" />
+                        </div>
+                        
                     </ul>
                 </div>
             </div>
         </nav>
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -115,7 +165,7 @@
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Movie App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Ecommerce BiClouds Tecno - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.js"></script>

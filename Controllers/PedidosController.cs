@@ -72,25 +72,43 @@ namespace MvcMovie.Controllers
             _context.CartItems.RemoveRange(cartItems);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MisPedidos));
         }
 
         // GET: Pedidos
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Index()
             {
                 return View(await _context.Pedido.ToListAsync());
             }
-
-            // GET: Pedidos/Details/5
-            public async Task<IActionResult> Details(int? id)
+        // GET: Pedidos/MisPedidos
+        [Authorize] // Cualquier usuario autenticado puede ver sus propios pedidos
+        public async Task<IActionResult> MisPedidos()
         {
-            if (id == null || _context.Pedido == null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var pedidos = await _context.Pedido
+                .Where(p => p.UserId == user.Id)
+                .ToListAsync();
+
+            return View(pedidos);
+        }
+
+        // GET: Pedidos/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
             {
                 return NotFound();
             }
 
             var pedido = await _context.Pedido
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (pedido == null)
             {
                 return NotFound();
@@ -122,7 +140,7 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Pedidos/Edit/5
-        // GET: Pedidos/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -139,11 +157,10 @@ namespace MvcMovie.Controllers
         }
 
         // POST: Pedidos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Pedido pedido)
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Detalles,Total,UserId")] Pedido pedido)
         {
             if (id != pedido.Id)
             {
@@ -154,7 +171,7 @@ namespace MvcMovie.Controllers
             {
                 try
                 {
-                    _context.Update(pedido);
+                    _context.Attach(pedido).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -174,6 +191,7 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Pedidos/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Pedido == null)
@@ -194,6 +212,7 @@ namespace MvcMovie.Controllers
         // POST: Pedidos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Pedido == null)
