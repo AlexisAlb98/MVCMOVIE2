@@ -11,7 +11,7 @@ using MvcMovie.Services;
 
 namespace MvcMovie.Controllers
 {
-    public class PedidosController : Controller
+    public class PedidosController : BaseController
     {
         private readonly MoviesContext _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -37,6 +37,7 @@ namespace MvcMovie.Controllers
             if (user == null)
             {
                 // Si el usuario no está autenticado, redirigirlo a la página de inicio de sesión
+                ViewBag.Genres = GetGenres();
                 return RedirectToAction("Login", "Account");
             }
 
@@ -48,6 +49,7 @@ namespace MvcMovie.Controllers
             if (cartItems.Count == 0)
             {
                 // No hay elementos en el carrito de compras, redirigir a alguna página de error o a la página principal
+                ViewBag.Genres = GetGenres();
                 return RedirectToAction("Index");
             }
 
@@ -72,6 +74,7 @@ namespace MvcMovie.Controllers
             _context.CartItems.RemoveRange(cartItems);
             await _context.SaveChangesAsync();
 
+            ViewBag.Genres = GetGenres();
             return RedirectToAction(nameof(MisPedidos));
         }
 
@@ -79,6 +82,7 @@ namespace MvcMovie.Controllers
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Index()
             {
+                ViewBag.Genres = GetGenres();
                 return View(await _context.Pedido.ToListAsync());
             }
         // GET: Pedidos/MisPedidos
@@ -95,6 +99,7 @@ namespace MvcMovie.Controllers
                 .Where(p => p.UserId == user.Id)
                 .ToListAsync();
 
+            ViewBag.Genres = GetGenres();
             return View(pedidos);
         }
 
@@ -114,6 +119,7 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
+            ViewBag.Genres = GetGenres();
             return View(pedido);
         }
 
@@ -136,6 +142,7 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Genres = GetGenres();
             return View(pedido);
         }
 
@@ -153,6 +160,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Genres = GetGenres();
             return View(pedido);
         }
 
@@ -187,6 +195,8 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Genres = GetGenres();
             return View(pedido);
         }
 
@@ -206,6 +216,7 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
+            ViewBag.Genres = GetGenres();
             return View(pedido);
         }
 
@@ -224,14 +235,16 @@ namespace MvcMovie.Controllers
             {
                 _context.Pedido.Remove(pedido);
             }
-            
+
+            ViewBag.Genres = GetGenres();
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PedidoExists(int id)
         {
-          return (_context.Pedido?.Any(e => e.Id == id)).GetValueOrDefault();
+            ViewBag.Genres = GetGenres();
+            return (_context.Pedido?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+
 namespace MvcMovie.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -25,6 +26,7 @@ namespace MvcMovie.Controllers
             var users = await _userManager.Users.ToListAsync();
             ViewData["RoleManager"] = _roleManager; // Pasar RoleManager a la vista
 
+            ViewBag.Genres = GetGenres();
             return View(users);
         }
         [HttpPost]
@@ -33,6 +35,7 @@ namespace MvcMovie.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
+                ViewBag.Genres = GetGenres();
                 return NotFound();
             }
 
@@ -51,6 +54,7 @@ namespace MvcMovie.Controllers
                 // Manejar el error apropiadamente
             }
 
+            ViewBag.Genres = GetGenres();
             return RedirectToAction(nameof(Index));
         }
     }

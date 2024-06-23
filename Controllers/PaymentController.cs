@@ -6,8 +6,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MvcMovie.Services;
 using Microsoft.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using MvcMovie.Controllers;
 
-public class PaymentController : Controller
+public class PaymentController : BaseController
 {
     private readonly PedidoService _pedidoService;
 
@@ -23,6 +30,7 @@ public class PaymentController : Controller
 
         if (pedido == null)
         {
+            ViewBag.Genres = GetGenres();
             return NotFound();
         }
 
@@ -52,6 +60,7 @@ public class PaymentController : Controller
         ViewBag.PreferenceId = preference.Id;
         ViewBag.PublicKey = "TEST-4d3e2bb1-2c4f-40e0-a7ef-1630e3fe20e1"; // Configura tu clave pública aquí
 
+        ViewBag.Genres = GetGenres();
         return View(pedido);
     }
 }

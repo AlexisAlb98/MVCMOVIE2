@@ -12,7 +12,7 @@ using MvcMovie.Models;
 
 namespace MvcMovie.Controllers
 {
-    public class MoviesController : Controller
+    public class MoviesController : BaseController
     {
         private readonly MoviesContext _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -23,42 +23,28 @@ namespace MvcMovie.Controllers
             _userManager = userManager;
         }
 
-        private List<SelectListItem> GetGenres()
-        {
-            return new List<SelectListItem>
-        {
-            new SelectListItem { Value = "Celulares", Text = "Celulares" },
-            new SelectListItem { Value = "Tablets", Text = "Tablets" },
-            new SelectListItem { Value = "Notebooks", Text = "Notebooks" },
-            new SelectListItem { Value = "Desktops", Text = "Desktops" },
-            new SelectListItem { Value = "Smartwatches", Text = "Smartwatches" },
-            new SelectListItem { Value = "Televisores", Text = "Televisores" },
-            new SelectListItem { Value = "Smarts TVs", Text = "Smarts TVs" },
-            new SelectListItem { Value = "Monitores", Text = "Monitores" },
-            new SelectListItem { Value = "Auriculares", Text = "Auriculares" },
-            new SelectListItem { Value = "Cámaras", Text = "Cámaras" },
-            new SelectListItem { Value = "Impresoras", Text = "Impresoras" },
-            new SelectListItem { Value = "Consolas de Videojuegos", Text = "Consolas de Videojuegos" }
-        };
-        }
-        // GET: 
-        public async Task<IActionResult> Index(string buscar)
+
+        // GET: Movies
+        public async Task<IActionResult> Index(string buscar, string[] categorias)
         {
             var user = await _userManager.GetUserAsync(User);
             var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
 
-            // Obtener todas las películas por defecto
             IQueryable<Movie> peliculas = _context.Movies;
 
-            // Filtrar si se proporciona un término de búsqueda
             if (!String.IsNullOrEmpty(buscar))
             {
                 peliculas = peliculas.Where(m => m.Title.Contains(buscar));
             }
 
+            if (categorias != null && categorias.Length > 0)
+            {
+                peliculas = peliculas.Where(m => categorias.Contains(m.Genre));
+            }
+
+            ViewBag.Genres = GetGenres();
             ViewBag.UserRoles = roles;
 
-            // Convertir los resultados en una lista y devolver la vista
             return View(await peliculas.ToListAsync());
         }
         // GET: Movies/Details/5
@@ -66,6 +52,7 @@ namespace MvcMovie.Controllers
         {
             if (id == null || _context.Movies == null)
             {
+                ViewBag.Genres = GetGenres();
                 return NotFound();
             }
 
@@ -73,9 +60,11 @@ namespace MvcMovie.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
+                ViewBag.Genres = GetGenres();
                 return NotFound();
             }
 
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 
@@ -169,9 +158,11 @@ namespace MvcMovie.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
+                ViewBag.Genres = GetGenres();
                 return NotFound();
             }
 
+            ViewBag.Genres = GetGenres();
             return View(movie);
         }
 
@@ -191,12 +182,14 @@ namespace MvcMovie.Controllers
                 _context.Movies.Remove(movie);
             }
 
+            ViewBag.Genres = GetGenres();
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
+            ViewBag.Genres = GetGenres();
             return (_context.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }

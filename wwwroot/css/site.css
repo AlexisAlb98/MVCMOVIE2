@@ -10,11 +10,20 @@ html {
     max-height: 250px;
 }
 
+/*.card-body {
+    margin-bottom: 10px;
+}
+.card-text {
+    margin-top: 50px;
+}*/
+
 /* Default Light Mode */
 body {
     background-color: white;
     color: black;
 }
+
+
 
     /* Dark Mode */
     body.dark-mode {
@@ -30,27 +39,38 @@ body {
         body.dark-mode .navbar .nav-link {
             color: white;
         }
-
+        body.dark-mode .table{
+            color:white;
+        }
         body.dark-mode .navbar .navbar-brand {
             color: white;
         }
 
+        body.dark-mode .card{
+            background-color:dimgray;
+        }
+
+        body.dark-mode .card-body {
+            color: white;
+        }
         /* Footer dark mode */
         body.dark-mode .footer {
             background-color: #222;
             color: gray;
         }
 
-/* Agrandar el tamaño del interruptor */
-#darkModeToggle {
-    width: 4.5rem; /* Ancho del interruptor */
-    height: 1.5rem; /* Alto del interruptor */
-}
+ 
 
-    #darkModeToggle::before {
-        width: 1.5rem; /* Ancho del círculo */
-        height: 1.5rem; /* Alto del círculo */
+    /* Agrandar el tamaño del interruptor */
+    #darkModeToggle {
+        width: 4.5rem; /* Ancho del interruptor */
+        height: 1.5rem; /* Alto del interruptor */
     }
+
+#darkModeToggle::before {
+    width: 1.5rem; /* Ancho del círculo */
+    height: 1.5rem; /* Alto del círculo */
+}
 
 .footer {
     position: fixed;
@@ -59,5 +79,5 @@ body {
     width: 100%;
     text-align: center;
     padding: 20px 0;
-    z-index: 1000; /* Asegura que el footer esté sobre cualquier otro contenido */
+    background-color:white
 }
