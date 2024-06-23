@@ -1,4 +1,3 @@
-
 html {
     position: relative;
     min-height: 100%;
@@ -11,54 +10,73 @@ html {
     max-height: 250px;
 }
 
-/* Default Light Mode */
-body {
-    background-color: white;
-    color: black;
+.card-body {
+    color: black !important; /* Color de texto predeterminado para el cuerpo de la tarjeta */
 }
 
-    /* Dark Mode */
+.table{
+    color: black;
+}
+    .table.dark-mode {
+     color: white !important;
+    }
+
+/* Modo de luz predeterminado */
+body {
+    background-color: white;
+    color: blue;
+}
+
+    /* Modo oscuro */
     body.dark-mode {
         background-color: #222;
         color: white;
     }
 
-            /* Navbar dark mode */
-        body.dark-mode .header {
-            background-color: black;
-            color: white;
-        }
-        body.dark-mode .navbar .nav-link {
-            color: white;
-        }
+/* Estilos generales del modo oscuro: ajuste según sea necesario */
+.dark-mode {
+    color: white; /* Heredará texto blanco para la mayoría de los elementos */
+}
 
-        body.dark-mode .navbar .navbar-brand {
-            color: white;
-        }
+/* El texto de la tarjeta permanece negro en el modo oscuro */
+.card-body {
+    color: inherit; /* Heredará del padre (body en este caso) */
+}
 
-        /* Footer dark mode */
-        body.dark-mode .footer {
-            background-color: #222;
-            color: gray;
-        }
+/* Navbar en modo oscuro */
+body.dark-mode .header {
+    background-color: black;
+    color: white;
+}
+
+body.dark-mode .navbar .nav-link,
+body.dark-mode .navbar .navbar-brand { /* Selectores múltiples objetivo */
+    color: white;
+}
+
+/* Footer en modo oscuro */
+body.dark-mode .footer {
+    background-color: #222;
+    color: gray;
+}
 
 /* Agrandar el tamaño del interruptor */
 #darkModeToggle {
-    width: 4.5rem; /* Ancho del interruptor */
-    height: 1.5rem; /* Alto del interruptor */
+    width: 4.5rem;
+    height: 1.5rem;
 }
 
     #darkModeToggle::before {
-        width: 1.5rem; /* Ancho del círculo */
-        height: 1.5rem; /* Alto del círculo */
+        width: 1.5rem;
+        height: 1.5rem;
     }
 
 .footer {
-    position: fixed;
+    position: static;
     left: 0;
     bottom: 0;
     width: 100%;
     text-align: center;
     padding: 20px 0;
-    z-index: 1000; /* Asegura que el footer esté sobre cualquier otro contenido */
+    z-index: 1000;
 }

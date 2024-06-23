@@ -4,60 +4,62 @@
 
 @inject UserManager<IdentityUser> userManager
 
-<h1>Lista de Usuarios Registrados</h1>
+<body>
+    <h1>Lista de Usuarios Registrados</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Roles Actuales</th>
-            <th>Modificar Rol</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@user.Id</td>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                <td>
-                    @foreach (var role in await userManager.GetRolesAsync(user))
-                    {
-                        <span>@role</span>
-
-                        <br />
-                    }
-                </td>
-                <td>
-                    <form asp-controller="Users" asp-action="ChangeUserRole">
-                        <input type="hidden" name="userId" value="@user.Id" />
-                        <select name="role" asp-items="GetRolesSelectListItems()">
-                            <option value="">Seleccione un rol</option>
-                        </select>
-                        <button type="submit">Cambiar Rol</button>
-                    </form>
-                </td>
+                <th>Id</th>
+                <th>UserName</th>
+                <th>Email</th>
+                <th>Roles Actuales</th>
+                <th>Modificar Rol</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        @foreach (var role in await userManager.GetRolesAsync(user))
+                        {
+                            <span>@role</span>
 
-@* Función para obtener los roles como SelectListItem *@
-@functions {
-    public List<SelectListItem> GetRolesSelectListItems()
-    {
-        var roleManager = (RoleManager<IdentityRole>)ViewData["RoleManager"];
-        var roles = roleManager.Roles.ToList();
-        var items = new List<SelectListItem>();
+                            <br />
+                        }
+                    </td>
+                    <td>
+                        <form asp-controller="Users" asp-action="ChangeUserRole">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <select name="role" asp-items="GetRolesSelectListItems()">
+                                <option value="">Seleccione un rol</option>
+                            </select>
+                            <button type="submit">Cambiar Rol</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-        foreach (var role in roles)
+    @* Función para obtener los roles como SelectListItem *@
+    @functions {
+        public List<SelectListItem> GetRolesSelectListItems()
         {
-            items.Add(new SelectListItem { Value = role.Name, Text = role.Name });
-        }
+            var roleManager = (RoleManager<IdentityRole>)ViewData["RoleManager"];
+            var roles = roleManager.Roles.ToList();
+            var items = new List<SelectListItem>();
 
-        return items;
+            foreach (var role in roles)
+            {
+                items.Add(new SelectListItem { Value = role.Name, Text = role.Name });
+            }
+
+            return items;
+        }
     }
-}
+</body>
