@@ -3,17 +3,17 @@
 @inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Inicion";
+    ViewData["Title"] = "Index";
     var userRoles = ViewBag.UserRoles as IList<string>;
     bool isAdmin = userRoles != null && userRoles.Contains("Administrador");
 }
 
-<h1>BiClouds-Tecno</h1>
+<h1>Productos</h1>
 
 <p>
     @if (isAdmin)
     {
-        <a asp-action="Create" class="btn btn-primary">Agregar nuevo producto</a>
+        <a asp-action="Create" class="btn btn-primary">Agregar un Producto</a>
     }
 </p>
 
@@ -57,8 +57,7 @@
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
                     }
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
-                    <br>
-                    <br>
+                    
                     <form asp-action="AddToCart" asp-controller="Cart" method="post" style="display:inline;">
                         <input type="hidden" name="movieId" value="@item.Id" />
                         <button type="submit" class="btn btn-success btn-sm">Agregar al carrito</button>
