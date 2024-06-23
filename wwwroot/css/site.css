@@ -14,6 +14,24 @@ html {
     color: black !important; /* Color de texto predeterminado para el cuerpo de la tarjeta */
 }
 
+/* Suponiendo que tu tabla tiene una clase específica, por ejemplo, .user-table */
+.user-table th {
+    background-color: darkblue; /* Cambia esto por el color de fondo que desees */
+    color: white; /* Cambia esto por el color de texto que desees */
+    padding: 10px;
+}
+
+.user-table td {
+    background-color: #f2f2f2; /* Cambia esto por el color de fondo de las celdas */
+    color: black; /* Cambia esto por el color de texto que desees */
+    padding: 10px;
+}
+
+/* Opcional: estilo para las filas alternas */
+.user-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Cambia esto por el color de fondo de las filas alternas */
+}
+
 .table{
     color: black;
 }
