@@ -9,6 +9,28 @@
 
 <h2>Lista de Pedidos</h2>
 
+<style>
+    .btn-detalles {
+        background-color: green;
+        color: white;
+    }
+
+    .btn-editar {
+        background-color: yellow;
+        color: black;
+    }
+
+    .btn-eliminar {
+        background-color: red;
+        color: white;
+    }
+
+    .btn-pagar {
+        background-color: lightblue;
+        color: black;
+    }
+</style>
+
 <table class="user-table">
     <thead>
         <tr>
@@ -26,14 +48,13 @@
                 <td>@Html.DisplayFor(modelItem => pedido.Detalles)</td>
                 <td>@Html.DisplayFor(modelItem => pedido.Total)</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@pedido.Id">Detalles</a>
+                    <a class="btn btn-detalles" asp-action="Details" asp-route-id="@pedido.Id">Detalles</a>
                     @if (isAdmin)
                     {
-                        <a asp-action="Edit" asp-route-id="@pedido.Id">Editar</a>
- 
-                    <a asp-action="Delete" asp-route-id= "@pedido.Id" > Eliminar </a>
+                        <a class="btn btn-editar" asp-action="Edit" asp-route-id="@pedido.Id">Editar</a>
+                        <a class="btn btn-eliminar" asp-action="Delete" asp-route-id="@pedido.Id">Eliminar</a>
                     }
-                    <a asp-action="Checkout" asp-controller="Payment" method="get" asp-route-pedidoId="@pedido.Id">Pagar</a> <!-- Agregar el enlace a la acción Checkout -->
+                    <a class="btn btn-pagar" asp-action="Checkout" asp-controller="Payment" method="get" asp-route-pedidoId="@pedido.Id">Pagar</a>
                 </td>
             </tr>
         }

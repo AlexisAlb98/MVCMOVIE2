@@ -1158,7 +1158,7 @@ progress {
     flex: 0 0 auto;
     width: 33.33333333%;
   }
-
+  .table
   .col-md-5 {
     flex: 0 0 auto;
     width: 41.66666667%;
@@ -2019,7 +2019,7 @@ progress {
   --bs-table-active-color: #000;
   --bs-table-hover-bg: #bfd1ec;
   --bs-table-hover-color: #000;
-  color: #000;
+  color: white;
   border-color: #bacbe6;
 }
 
