@@ -10,11 +10,12 @@ html {
     max-height: 250px;
 }
 
+
 .card-body {
     color: black !important; /* Color de texto predeterminado para el cuerpo de la tarjeta */
 }
 
-/* Suponiendo que tu tabla tiene una clase específica, por ejemplo, .user-table */
+/* Suponiendo que tu tabla tiene una clase especÃ­fica, por ejemplo, .user-table */
 .user-table th {
     background-color: darkblue; /* Cambia esto por el color de fondo que desees */
     color: white; /* Cambia esto por el color de texto que desees */
@@ -40,25 +41,42 @@ html {
     }
 
 /* Modo de luz predeterminado */
+
+/*.card-body {
+    margin-bottom: 10px;
+}
+.card-text {
+    margin-top: 50px;
+}*/
+
+/* Default Light Mode */
+
 body {
     background-color: white;
     color: blue;
 }
 
+
     /* Modo oscuro */
+
+
+
+    /* Dark Mode */
+
     body.dark-mode {
         background-color: #222;
         color: white;
     }
 
-/* Estilos generales del modo oscuro: ajuste según sea necesario */
+
+/* Estilos generales del modo oscuro: ajuste segÃºn sea necesario */
 .dark-mode {
-    color: white; /* Heredará texto blanco para la mayoría de los elementos */
+    color: white; /* HeredarÃ¡ texto blanco para la mayorÃ­a de los elementos */
 }
 
 /* El texto de la tarjeta permanece negro en el modo oscuro */
 .card-body {
-    color: inherit; /* Heredará del padre (body en este caso) */
+    color: inherit; /* HeredarÃ¡ del padre (body en este caso) */
 }
 
 /* Navbar en modo oscuro */
@@ -68,17 +86,12 @@ body.dark-mode .header {
 }
 
 body.dark-mode .navbar .nav-link,
-body.dark-mode .navbar .navbar-brand { /* Selectores múltiples objetivo */
+body.dark-mode .navbar .navbar-brand { /* Selectores mÃºltiples objetivo */
     color: white;
 }
 
-/* Footer en modo oscuro */
-body.dark-mode .footer {
-    background-color: #222;
-    color: gray;
-}
 
-/* Agrandar el tamaño del interruptor */
+/* Agrandar el tamaÃ±o del interruptor */
 #darkModeToggle {
     width: 4.5rem;
     height: 1.5rem;
@@ -87,6 +100,32 @@ body.dark-mode .footer {
     #darkModeToggle::before {
         width: 1.5rem;
         height: 1.5rem;
+
+       
+        
+        body.dark-mode .table{
+            color:white;
+        }
+        body.dark-mode .navbar .navbar-brand {
+            color: white;
+        }
+
+        body.dark-mode .card{
+            background-color:dimgray;
+        }
+
+        body.dark-mode .card-body {
+            color: white;
+        }
+        /* Footer dark mode */
+        body.dark-mode .footer {
+            background-color: #222;
+            color: gray;
+        }
+
+ 
+
+
     }
 
 .footer {
@@ -96,5 +135,9 @@ body.dark-mode .footer {
     width: 100%;
     text-align: center;
     padding: 20px 0;
+
     z-index: 1000;
+
+    background-color:white
+
 }
