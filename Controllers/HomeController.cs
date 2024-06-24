@@ -28,5 +28,18 @@ namespace MvcMovie.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpPost]
+        public ActionResult ToggleTheme()
+        {
+            // Get the desired theme value (light/dark) from the request
+            string theme = Request.Form["theme"]; // Assuming theme is passed as a form field
+
+            // Update the Theme variable in ViewData
+            ViewData["Theme"] = theme; // Set the theme based on the value from the request
+
+            // Redirect to the current page or desired page
+            return RedirectToAction("Index"); // Redirect to the Index action of the HomeController
+        }
+
     }
 }

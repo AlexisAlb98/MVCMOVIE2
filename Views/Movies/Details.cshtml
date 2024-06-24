@@ -7,47 +7,157 @@
     bool isAdmin = User.IsInRole("Administrador");
 }
 
-<h1>Detalles</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Genre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Model.Image" alt="Movie Image" style="max-width: 200px;" />
-        </dd>
-    </dl>
-</div>
-<div>
-    @if (isAdmin)
-    {
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-    }
-    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
-</div>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff; /* Detalles en azul */
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .details-table dt, .details-table dd {
+                padding: 10px;
+                border: 1px solid #ddd;
+                background-color: #fff;
+                color: #007bff; /* Detalles en azul */
+                width: 50%;
+                box-sizing: border-box;
+                text-align: left;
+            }
+
+            .details-table dt {
+                font-weight: bold;
+                background-color: #f8f8f8;
+            }
+
+            .details-table img {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+                border-radius: 8px;
+            }
+
+        .btn {
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn-editar {
+            background-color: yellow;
+            color: black;
+        }
+
+        .btn-volver {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+        }
+
+        .btn-pagar {
+            background-color: lightblue;
+            color: black;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .details-table .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalles</h1>
+        <hr />
+        <dl class="details-table">
+            <div class="row">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+            </div>
+            <div class="row">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ReleaseDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ReleaseDate)
+                </dd>
+            </div>
+            <div class="row">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Genre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Genre)
+                </dd>
+            </div>
+            <div class="row">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+            </div>
+            <div class="row">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Image)
+                </dt>
+                <dd>
+                    <img src="@Model.Image" alt="Movie Image" />
+                </dd>
+            </div>
+        </dl>
+        <div>
+            @if (isAdmin)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-editar">Editar</a>
+            }
+            <a asp-action="Index" class="btn btn-volver">Volver a la lista</a>
+            <a asp-action="Checkout" asp-controller="Payment" method="get" asp-route-pedidoId="@Model.Id" class="btn btn-pagar">Pagar</a>
+        </div>
+    </div>
+</body>
+</html>
