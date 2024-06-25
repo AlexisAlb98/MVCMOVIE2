@@ -1,15 +1,114 @@
 ﻿@model Pedido
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Pedido</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-<h1>Detalles del Pedido</h1>
-<p>Nombre: @Model.Nombre</p>
-<p>Detalles: @Model.Detalles</p>
-<p>Total: @Model.Total</p>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-<form asp-action="Checkout" asp-controller="Payment" method="get">
-    <input type="hidden" name="pedidoId" value="@Model.Id" />
-    <button type="submit">Pagar</button>
-</form>
+        h2 {
+            text-align: center;
+            color: #007bff; /* Detalles en azul */
+        }
 
-<div>
-    <a asp-action="MisPedidos">Volver a la lista de pedidos</a>
-</div>
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .user-table th, .user-table td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .user-table th {
+                background-color: #f8f8f8;
+                color: #007bff; /* Detalles en azul */
+            }
+
+        .btn {
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn-detalles {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-editar {
+            background-color: yellow;
+            color: black;
+        }
+
+        .btn-eliminar {
+            background-color: red;
+            color: white;
+        }
+
+        .btn-pagar {
+            background-color: lightblue;
+            color: black;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Detalles del Pedido</h2>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Detalles</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Nombre</td>
+                    <td>@Model.Detalles</td>
+                    <td>@Model.Total</td>
+                    <td>
+                        <form asp-action="Checkout" asp-controller="Payment" method="get" style="display: inline;">
+                            <input type="hidden" name="pedidoId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-pagar">Pagar</button>
+                        </form>
+                        <a asp-action="MisPedidos" class="btn btn-detalles">Volver a la lista de pedidos</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
