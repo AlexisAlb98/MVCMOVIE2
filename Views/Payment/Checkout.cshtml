@@ -1,55 +1,153 @@
 @{
     ViewBag.Title = "Checkout";
 }
-<header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-</header>
-<h2>Checkout</h2>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-<div>
-    <h3>Detalles del Pedido</h3>
-    <p>Nombre: @Model.Nombre</p>
-    <p>Detalles: @Model.Detalles</p>
-    <p>Total: @Model.Total</p>
-</div>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-<!-- Mensaje de éxito oculto inicialmente -->
-<div id="successMessage" class="alert alert-success" style="display: none;">
-    <strong>¡Compra exitosa!</strong> Gracias por tu compra.
-</div>
+        h2, h3 {
+            text-align: center;
+            color: #007bff; /* Detalles en azul */
+        }
 
-<script src="https://sdk.mercadopago.com/js/v2"></script>
-<script>
-    const mp = new MercadoPago('@ViewBag.PublicKey', {
-        locale: 'es-AR'
-    });
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-    // Función para iniciar el pago
-    function iniciarPago() {
-        mp.checkout({
-            preference: {
-                id: '@ViewBag.PreferenceId'
-            },
-            render: {
-                container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
-                label: 'Pagar', // Cambia el texto del botón de pago (opcional)
+            .user-table th, .user-table td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
             }
-        });
-        // Mostrar mensaje de éxito después de 45 segundos
-        setTimeout(function () {
-            document.getElementById('successMessage').style.display = 'block';
-        }, 45000); // 45000 milisegundos = 45 segundos
 
-        // Redireccionar automáticamente a la vista Index después de 48 segundos
-        setTimeout(function () {
-            window.location.href = '@Url.Action("Index", "Movies")'; // Cambia "Home" por el controlador adecuado si es diferente
-        }, 48000); // 48000 milisegundos = 48 segundos
-    }
+            .user-table th {
+                background-color: #f8f8f8;
+                color: #007bff; /* Detalles en azul */
+            }
 
-    // Llamar a la función iniciarPago cuando el documento esté listo
-    document.addEventListener("DOMContentLoaded", function () {
-        iniciarPago();
-    });
-</script>
+        .btn {
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
 
-<div class="cho-container"></div>
+        .btn-detalles {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-editar {
+            background-color: yellow;
+            color: black;
+        }
+
+        .btn-eliminar {
+            background-color: red;
+            color: white;
+        }
+
+        .btn-pagar {
+            background-color: lightblue;
+            color: black;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Checkout</h2>
+        <div>
+            <h3>Detalles del Pedido</h3>
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Detalles</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.Nombre</td>
+                        <td>@Model.Detalles</td>
+                        <td>@Model.Total</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mensaje de éxito oculto inicialmente -->
+        <div id="successMessage" class="alert alert-success" style="display: none;">
+            <strong>¡Compra exitosa!</strong> Gracias por tu compra.
+        </div>
+
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
+        <script>
+            const mp = new MercadoPago('@ViewBag.PublicKey', {
+                locale: 'es-AR'
+            });
+
+            // Función para iniciar el pago
+            function iniciarPago() {
+                mp.checkout({
+                    preference: {
+                        id: '@ViewBag.PreferenceId'
+                    },
+                    render: {
+                        container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
+                        label: 'Pagar', // Cambia el texto del botón de pago (opcional)
+                    }
+                });
+                // Mostrar mensaje de éxito después de 45 segundos
+                setTimeout(function () {
+                    document.getElementById('successMessage').style.display = 'block';
+                }, 45000); // 45000 milisegundos = 45 segundos
+
+                // Redireccionar automáticamente a la vista Index después de 48 segundos
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Index", "Movies")'; // Cambia "Home" por el controlador adecuado si es diferente
+                }, 48000); // 48000 milisegundos = 48 segundos
+            }
+
+            // Llamar a la función iniciarPago cuando el documento esté listo
+            document.addEventListener("DOMContentLoaded", function () {
+                iniciarPago();
+            });
+        </script>
+
+        <div class="cho-container"></div>
+    </div>
+</body>
+</html>

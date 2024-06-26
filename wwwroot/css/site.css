@@ -10,7 +10,6 @@ html {
     max-height: 250px;
 }
 
-
 .card-body {
     color: black !important; /* Color de texto predeterminado para el cuerpo de la tarjeta */
 }
@@ -54,6 +53,7 @@ html {
 body {
     background-color: white;
     color: blue;
+    margin: 5px;
 }
 
 
@@ -128,6 +128,7 @@ body.dark-mode .navbar .navbar-brand { /* Selectores múltiples objetivo */
 
     }
 
+
 .footer {
     position: fixed;
     left: 0;
@@ -140,4 +141,9 @@ body.dark-mode .navbar .navbar-brand { /* Selectores múltiples objetivo */
 
     background-color:white
 
+}
+
+body.dark-mode .footer{
+    background-color: black;
+    color: white;
 }

@@ -50,7 +50,7 @@
                                             @foreach (var genre in genres)
                                             {
                                             <li>
-                                                <div class="form-check">
+                                                <div class="form-check" style="margin-left:10px">
                                                     <input class="form-check-input" type="checkbox" name="categorias" value="@genre.Value" id="genre-@genre.Value">
                                                     <label class="form-check-label" for="genre-@genre.Value">
                                                             @genre.Text
@@ -59,7 +59,7 @@
                                             </li>
                                             }
                                         <li><hr class="dropdown-divider"></li>
-                                        <li>
+                                        <li style="margin-left:1rem">
                                             <button type="submit" class="btn btn-primary">Aplicar filtros</button>
                                             <button type="button" class="btn btn-secondary" onclick="limpiarFiltros()">Limpiar filtros</button>
                                         </li>
